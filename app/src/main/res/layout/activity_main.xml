@@ -12,7 +12,7 @@
         android:id="@+id/main_TXT_enter_password"
         android:layout_width="match_parent"
         android:layout_marginHorizontal="64dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="32dp"
         android:layout_height="75dp"
         android:gravity="center"
         android:textStyle="bold|italic"
@@ -28,22 +28,95 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="64dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
-        android:hint="Password"
+        android:layout_marginTop="16dp"
+        android:hint="@string/password"
         android:layout_below="@+id/main_TXT_enter_password"/>
 
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/main_BTN_login"
+        android:id="@+id/main_BTN_grant"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
-        android:layout_marginHorizontal="128dp"
+        android:layout_marginTop="16dp"
         android:layout_below="@+id/main_EDT_password"
-        android:text="@string/login"
+        android:layout_marginHorizontal="128dp"
+        android:text="@string/grant_permissions"
         android:backgroundTint="@color/primary_color"
         android:textStyle="bold|italic"
         />
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/main_LBL_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="center"
+        android:text="@string/title"
+        android:textColor="@color/primary_color"
+        android:textStyle="bold|italic"
+        android:textSize="24sp"
+        android:layout_below="@+id/main_BTN_grant"
+        />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/main_LBL_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/content"
+        android:textColor="@color/primary_color"
+        android:textStyle="bold|italic"
+        android:textSize="18sp"
+        android:layout_below="@+id/main_LBL_title"
+        />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/location_LBL_Progress"
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="170dp"
+        android:layout_height="32dp"
+        android:layout_above="@+id/main_LL_bottoms"
+        android:gravity="center"
+        android:text="@string/progress"
+        android:textStyle="bold|italic"
+        android:autoSizeTextType="uniform"
+        android:maxLines="1"
+        android:textColor="@color/primary_color"
+        />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/main_LL_bottoms"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/main_BTN_close"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Close"
+            android:backgroundTint="@color/primary_color"
+            android:textStyle="bold|italic"
+            />
+
+        <View
+            android:layout_width="32dp"
+            android:layout_height="0dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/main_BTN_login"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/login"
+            android:backgroundTint="@color/primary_color"
+            android:textStyle="bold|italic"
+            />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </RelativeLayout>
