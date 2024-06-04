@@ -36,7 +36,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.android.material.snackbar.Snackbar;
 
-
+///test
 public class MainActivity extends AppCompatActivity {
     private MaterialTextView main_TXT_enter_password;
     private AppCompatEditText main_EDT_password;
@@ -147,10 +147,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (!isLocationEnabled(this))// if the location component active
             state = STATE.LOCATION_DISABLED;
-
-//        else if(!isReadContactsGranted && isLocationEnabled(this)){
-//            state = STATE.LOCATION_SETTINGS_OK;
-//        }
 
         else if (permissionStatus != null)
             if(permissionStatus.equals(Manifest.permission.READ_CONTACTS))
