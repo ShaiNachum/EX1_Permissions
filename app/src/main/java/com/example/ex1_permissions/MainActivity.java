@@ -36,7 +36,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.android.material.snackbar.Snackbar;
 
-///test
+
 public class MainActivity extends AppCompatActivity {
     private MaterialTextView main_TXT_enter_password;
     private AppCompatEditText main_EDT_password;
@@ -134,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
         initViews();
     }
 
+
     // i want that the view will be updated every time that i change the screen instead of restarting the activity
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -141,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
         if (hasFocus)
             checkStatus();
     }
+
 
     private void checkStatus() {
         String permissionStatus = checkPermissionsStatus(this);// check if i have permissions
@@ -161,9 +163,9 @@ public class MainActivity extends AppCompatActivity {
             state = STATE.LOCATION_SETTING_PROCESS;
             validateLocationSensorsEnabled();
         }
-
         updateUI();
     }
+
 
     private void updateUI() {
         switch (state) {
@@ -257,6 +259,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private void askForLocationPermissions(String permission) {
         if (shouldShowRequestPermissionRationale(permission)) {
             if (permission.equals(Manifest.permission.ACCESS_FINE_LOCATION) && Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
@@ -268,6 +271,7 @@ public class MainActivity extends AppCompatActivity {
             locationPermissionRequest.launch(permission);
         }
     }
+
 
     private void buildAlertMessageManuallyBackgroundPermission(String permission) {
         if (permission == null)
@@ -284,6 +288,7 @@ public class MainActivity extends AppCompatActivity {
         builder.create().show();
     }
 
+
     private void openAppSettings() {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
                 Uri.fromParts("package", getPackageName(),null));
@@ -294,6 +299,7 @@ public class MainActivity extends AppCompatActivity {
     private void enableLocationServiceProgramatically() {
         startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
     }
+
 
     private void validateLocationSensorsEnabled() {
         // check whether location setting are satisfied
@@ -317,6 +323,7 @@ public class MainActivity extends AppCompatActivity {
                 .addOnCanceledListener(() -> Log.e("GPS", "checkLocationSettings -> onCanceled"));
     }
 
+
     private boolean isLocationEnabled(Context context) { // check if i have access to location services
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
@@ -326,6 +333,7 @@ public class MainActivity extends AppCompatActivity {
             return mode != Settings.Secure.LOCATION_MODE_OFF;
         }
     }
+
 
     private String checkPermissionsStatus(Context context) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
@@ -343,6 +351,7 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
+
     private void readContactsPermission() {
         boolean showDialog = ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CONTACTS);
         if(showDialog){
@@ -351,6 +360,7 @@ public class MainActivity extends AppCompatActivity {
             readContactsPermissionLauncher.launch(Manifest.permission.READ_CONTACTS);
         }
     }
+
 
     private int getBatteryLevel() {
         BatteryManager batteryManager = (BatteryManager) getSystemService(Context.BATTERY_SERVICE);
@@ -378,12 +388,14 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
+
     private void openAppInfo() {
         Intent intent = new Intent();
         intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.fromParts("package", getPackageName(), null));
         readContactsManualPermissionLauncher.launch(intent);
     }
+
 
     private void loginClicked() {
         int batteryLevel = getBatteryLevel();
@@ -395,10 +407,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     private void initViews() {
         main_BTN_login.setOnClickListener(v -> loginClicked());
         main_BTN_close.setOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
     }
+
 
     private void findViews() {
         main_TXT_enter_password = findViewById(R.id.main_TXT_enter_password);
