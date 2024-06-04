@@ -1,0 +1,36 @@
+R_DEF: Internal format may change without notice
+local
+color primary_color
+color white
+drawable ic_launcher_background
+drawable ic_launcher_foreground
+id location_LBL_Progress
+id main
+id main_BTN_close
+id main_BTN_grant
+id main_BTN_login
+id main_EDT_password
+id main_LBL_content
+id main_LBL_title
+id main_LL_bottoms
+id main_SCRL_content
+id main_TXT_enter_password
+layout activity_main
+layout activity_welcome
+mipmap ic_launcher
+mipmap ic_launcher_round
+string app_name
+string content
+string enter_password
+string grant_permissions
+string login
+string password
+string permission_rationale
+string progress
+string settings
+string title
+string welcome
+style Base.Theme.EX1_Permissions
+style Theme.EX1_Permissions
+xml backup_rules
+xml data_extraction_rules

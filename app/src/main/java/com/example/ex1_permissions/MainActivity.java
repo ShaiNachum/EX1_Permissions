@@ -54,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
         NO_BACKGROUND_PERMISSION,
         LOCATION_DISABLED,
         LOCATION_SETTING_PROCESS,
-        LOCATION_SETTINGS_OK
+        LOCATION_SETTINGS_OK,
+        ALL_OK
     }
     ActivityResultLauncher<String> readContactsPermissionLauncher =
             registerForActivityResult(
@@ -147,8 +148,15 @@ public class MainActivity extends AppCompatActivity {
         if (!isLocationEnabled(this))// if the location component active
             state = STATE.LOCATION_DISABLED;
 
+//        else if(!isReadContactsGranted && isLocationEnabled(this)){
+//            state = STATE.LOCATION_SETTINGS_OK;
+//        }
+
         else if (permissionStatus != null)
-            if (permissionStatus.equals(Manifest.permission.ACCESS_BACKGROUND_LOCATION))
+            if(permissionStatus.equals(Manifest.permission.READ_CONTACTS))
+                state = STATE.LOCATION_SETTINGS_OK;
+
+            else if (permissionStatus.equals(Manifest.permission.ACCESS_BACKGROUND_LOCATION))
                 state = STATE.NO_BACKGROUND_PERMISSION;
             else
                 state = STATE.NO_REGULAR_PERMISSION;
@@ -166,16 +174,20 @@ public class MainActivity extends AppCompatActivity {
             case NA:
                 main_LBL_title.setText("NA");
                 main_LBL_content.setText("NA");
-                main_LBL_Progress.setText("0/0");
+                main_LBL_Progress.setText("0/5");
                 main_BTN_close.setVisibility(View.INVISIBLE);
                 main_BTN_grant.setVisibility(View.INVISIBLE);
                 main_BTN_login.setVisibility(View.INVISIBLE);
+                main_TXT_enter_password.setVisibility(View.INVISIBLE);
+                main_EDT_password.setVisibility(View.INVISIBLE);
                 break;
 
             case NO_REGULAR_PERMISSION:
                 main_LBL_title.setText("Location Permission");
                 main_LBL_content.setText("Location permission is needed for core functionality.\nPlease Enable the app permission to access your location data");
-                main_LBL_Progress.setText("2/4");
+                main_LBL_Progress.setText("2/5");
+                main_TXT_enter_password.setVisibility(View.INVISIBLE);
+                main_EDT_password.setVisibility(View.INVISIBLE);
                 main_BTN_login.setVisibility(View.INVISIBLE);
                 main_BTN_close.setVisibility(View.VISIBLE);
                 main_BTN_grant.setVisibility(View.VISIBLE);
@@ -186,7 +198,9 @@ public class MainActivity extends AppCompatActivity {
             case NO_BACKGROUND_PERMISSION:
                 main_LBL_title.setText("Background location permission");
                 main_LBL_content.setText("This app collects location data even when the app is closed or not in use.\nTo protect your privacy, the app stores only calculated indicators, like distance from home and never exact location.\nA notification is always displayed in the notifications bar when service is running.");
-                main_LBL_Progress.setText("3/4");
+                main_LBL_Progress.setText("3/5");
+                main_TXT_enter_password.setVisibility(View.INVISIBLE);
+                main_EDT_password.setVisibility(View.INVISIBLE);
                 main_BTN_close.setVisibility(View.VISIBLE);
                 main_BTN_grant.setVisibility(View.VISIBLE);
                 main_BTN_grant.setText("Grant Permission");
@@ -197,7 +211,9 @@ public class MainActivity extends AppCompatActivity {
             case LOCATION_DISABLED:
                 main_LBL_title.setText("Enable Location Services");
                 main_LBL_content.setText("The app samples your location.\nPlease enable location services (GPS).");
-                main_LBL_Progress.setText("1/4");
+                main_LBL_Progress.setText("1/5");
+                main_TXT_enter_password.setVisibility(View.INVISIBLE);
+                main_EDT_password.setVisibility(View.INVISIBLE);
                 main_BTN_close.setVisibility(View.VISIBLE);
                 main_BTN_grant.setVisibility(View.VISIBLE);
                 main_BTN_login.setVisibility(View.INVISIBLE);
@@ -210,7 +226,9 @@ public class MainActivity extends AppCompatActivity {
             case LOCATION_SETTING_PROCESS:
                 main_LBL_title.setText("LOCATION_SETTINGS_PROCCESS");
                 main_LBL_content.setText("LOCATION_SETTINGS_PROCCESS");
-                main_LBL_Progress.setText("4/4");
+                main_LBL_Progress.setText("4/5");
+                main_TXT_enter_password.setVisibility(View.INVISIBLE);
+                main_EDT_password.setVisibility(View.INVISIBLE);
                 main_BTN_close.setVisibility(View.INVISIBLE);
                 main_BTN_grant.setVisibility(View.INVISIBLE);
                 break;
@@ -218,12 +236,27 @@ public class MainActivity extends AppCompatActivity {
             case LOCATION_SETTINGS_OK:
                 main_LBL_title.setText("Enable Read Contacts Permission");
                 main_LBL_content.setText("The app need your permission to accsess phone contacts");
-                main_LBL_Progress.setText("4/4");
-                main_BTN_grant.setVisibility(View.VISIBLE);
+                main_LBL_Progress.setText("4/5");
+                main_TXT_enter_password.setVisibility(View.INVISIBLE);
+                main_EDT_password.setVisibility(View.INVISIBLE);
                 main_BTN_close.setVisibility(View.VISIBLE);
+                main_BTN_login.setVisibility(View.INVISIBLE);
+                main_BTN_grant.setVisibility(View.VISIBLE);
+                main_BTN_grant.setText("Grant");
                 main_BTN_grant.setOnClickListener(v -> {
                     readContactsPermission();
                 });
+                break;
+
+            case ALL_OK:
+                main_LBL_title.setText("Almost There! 👍🏻");
+                main_LBL_content.setText("Location services are running and all permissions have been granted.\nYou can now enter password.");
+                main_LBL_Progress.setText("5/5");
+                main_BTN_close.setVisibility(View.INVISIBLE);
+                main_BTN_grant.setVisibility(View.INVISIBLE);
+                main_BTN_login.setVisibility(View.VISIBLE);
+                main_TXT_enter_password.setVisibility(View.VISIBLE);
+                main_EDT_password.setVisibility(View.VISIBLE);
                 break;
         }
     }
@@ -281,7 +314,7 @@ public class MainActivity extends AppCompatActivity {
 
         settingsClient.checkLocationSettings(builder.build())
                 .addOnSuccessListener(locationSettingsResponse -> {
-                    state = STATE.LOCATION_SETTINGS_OK;
+                    state = STATE.ALL_OK;
                     updateUI();
                 })
                 .addOnFailureListener(e -> Log.e("GPS", "Unable to execute request."))
@@ -308,24 +341,18 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= 29 && ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED)
             return Manifest.permission.ACCESS_BACKGROUND_LOCATION;
 
+        if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
+            return Manifest.permission.READ_CONTACTS;
+
         return null;
     }
 
     private void readContactsPermission() {
-        boolean isGranted = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED;
-        if(isGranted){
-            isReadContactsGranted = true;
-            main_BTN_login.setVisibility(View.VISIBLE);
-            main_LBL_title.setVisibility(View.INVISIBLE);
-            main_LBL_content.setVisibility(View.INVISIBLE);
-            main_BTN_grant.setVisibility(View.INVISIBLE);
+        boolean showDialog = ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CONTACTS);
+        if(showDialog){
+            openReadContactsPermissionDialog();
         }else{
-            boolean showDialog = ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_CONTACTS);
-            if(showDialog){
-                openReadContactsPermissionDialog();
-            }else{
-                readContactsPermissionLauncher.launch(Manifest.permission.READ_CONTACTS);
-            }
+            readContactsPermissionLauncher.launch(Manifest.permission.READ_CONTACTS);
         }
     }
 
@@ -366,7 +393,7 @@ public class MainActivity extends AppCompatActivity {
         int batteryLevel = getBatteryLevel();
         String password = main_EDT_password.getText().toString();
 
-        if(this.isReadContactsGranted && String.valueOf(batteryLevel).equals(password)){
+        if(String.valueOf(batteryLevel).equals(password)){
             Intent intent = new Intent(MainActivity.this, WelcomeActivity.class);
             startActivity(intent);
         }
